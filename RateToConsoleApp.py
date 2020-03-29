@@ -10,6 +10,7 @@ class RateToConsoleApp:
     def __init__(self):
         self.spark = SparkSession.builder.master("local[*]").getOrCreate()
         print(self.spark.sparkContext.getConf().getAll())
+        print(self.spark.version)
 
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):

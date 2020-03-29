@@ -10,6 +10,7 @@ class KafkaToConsoleApp:
     def __init__(self):
         self.spark = SparkSession.builder.master("local[*]").getOrCreate()
         print(self.spark.sparkContext.getConf().getAll())
+        print(self.spark.version)
 
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):
@@ -33,7 +34,6 @@ class KafkaToConsoleApp:
     def get_events_df(self):
         events_df = self.spark.readStream.format("kafka") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
-            .option("kafka.compression.type", "gzip") \
             .option("subscribe", "events") \
             .load()
 

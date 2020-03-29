@@ -1,4 +1,5 @@
 from RateToConsoleApp import RateToConsoleApp
+from pyspark.sql.functions import expr
 
 
 class RateToKafkaApp(RateToConsoleApp):
@@ -9,12 +10,11 @@ class RateToKafkaApp(RateToConsoleApp):
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):
         print("Writing batch: %s to kafka..." % batch_id)
-        micro_batch_df.write \
+        micro_batch_df \
+            .withColumn("topic", expr("'events'")).write \
             .format("kafka") \
             .option("checkpointLocation", "checkpoint") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
-            .option("kafka.compression.type", "gzip") \
-            .option("topic", "events") \
             .save()
 
 

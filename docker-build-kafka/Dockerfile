@@ -22,4 +22,4 @@ ENV KAFKA_HOME=${KAFKA_HOME}
 RUN rm /opt/*tgz
 
 COPY entrypoint.sh /opt
-
+COPY server.properties /opt/kakfa/config/
