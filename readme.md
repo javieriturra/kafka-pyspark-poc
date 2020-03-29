@@ -25,7 +25,7 @@ You can use the provided script:
 
 ## Run the services
 
-Up the docker service kafka, provided into the folder docker-build-kafka. I.e.:
+Up the docker service kafka, provided into the folder docker-build-kafka, i.e.:
 
 ```cd docker-build-kafka```
 
@@ -34,13 +34,10 @@ Up the docker service kafka, provided into the folder docker-build-kafka. I.e.:
 ## Run the apps
 
 To run the apps, use PyCharm's right click menu on the files:
-- RateToKafkaApp.py: to produce events
-- KafkaToConsoleApp.py: to consume events
+1. RateToKafkaApp.py: to produce events
+2. KafkaToConsoleApp.py: to consume events
 
 Alternatively, you can run the apps in the console:
 
-```~/anaconda3/envs/pyspark-env/bin/python RateToKafkaApp.py```
-```~/anaconda3/envs/pyspark-env/bin/python KafkaToConsoleApp.py```
-
-
-
+1. ```~/anaconda3/envs/pyspark-env/bin/python RateToKafkaApp.py```
+2. ```~/anaconda3/envs/pyspark-env/bin/python KafkaToConsoleApp.py```
