@@ -2,6 +2,9 @@ from RateToConsoleApp import RateToConsoleApp
 
 
 class RateToKafkaApp(RateToConsoleApp):
+    """
+    The RateToConsoleApp reads records from a Rate stream and write them to a Kafka Topic
+    """
 
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):

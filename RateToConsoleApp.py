@@ -3,6 +3,9 @@ from pyspark.sql.functions import struct, to_json, expr
 
 
 class RateToConsoleApp:
+    """
+    The RateToConsoleApp reads records from a Rate stream and show them in the console
+    """
 
     def __init__(self):
         self.spark = SparkSession.builder.master("local[*]").getOrCreate()

@@ -3,6 +3,9 @@ from pyspark.sql.functions import struct, to_json, expr
 
 
 class KafkaToConsoleApp:
+    """
+    The KafkaToConsoleApp reads records from a Kafka topic and show them in the console
+    """
 
     def __init__(self):
         self.spark = SparkSession.builder.master("local[*]").getOrCreate()
@@ -29,7 +32,6 @@ class KafkaToConsoleApp:
 
     def get_events_df(self):
         events_df = self.spark.readStream.format("kafka") \
-            .option("checkpointLocation", "checkpoint") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
             .option("kafka.compression.type", "gzip") \
             .option("subscribe", "events") \
