@@ -13,7 +13,6 @@ class RateToKafkaApp(RateToConsoleApp):
         micro_batch_df \
             .withColumn("topic", expr("'events'")).write \
             .format("kafka") \
-            .option("checkpointLocation", "checkpoint") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
             .save()
 
