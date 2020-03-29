@@ -1,0 +1,8 @@
+version: "3"
+services:
+  kafka:
+    build: ..
+    hostname: "kafka"
+    entrypoint: "/bin/bash entrypoint.sh"
+    ports:
+      - 9092:9092
