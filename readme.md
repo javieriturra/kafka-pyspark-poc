@@ -33,7 +33,7 @@ Writen in Python 3, this project introduces basic Structured Streaming features 
 
 Now you can open the project with PyCharm using the recently created conda environment.  
 
-## Run the services
+## Running the Services
 
 Up the docker service kafka, defined into the folder docker-build-kafka, i.e.:
 
@@ -41,14 +41,24 @@ Up the docker service kafka, defined into the folder docker-build-kafka, i.e.:
 
 ```docker-compose up```
 
-## Run the apps
+## Running the Apps
 
 To run the apps, use PyCharm's right click menu on the files. Alternatively, you can run the apps in the console.
 
-|Producers           |Consumers                        |
-|---                 |---                              |
-|RateToConsoleApp.py |KafkaEventCountApp.py            |
-|RateToKafkaApp.py   |KafkaEventCountByLocationApp.py  |
-|                    |KafkaToConsoleApp.py             |
+|Producers            |Consumers                          |
+|---                  |---                                |
+|RateToConsoleApp.py  |KafkaEventCountApp.py              |
+|__RateToKafkaApp.py__|__KafkaEventCountByLocationApp.py__|
+|                     |KafkaToConsoleApp.py               | 
 
 Please read the documentation to understand what does each program.
+
+## TODO
+
+- More detail on explanations
+- Writing to a Time Series Database
+- Spark Cluster Usage
+- Real time Visualization
+- More realistic data emulated data
+- Connecting to a real data source
+
