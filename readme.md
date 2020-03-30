@@ -1,30 +1,44 @@
 # Kafka PySpark POC
 
+Writen in Python 3, this project introduces basic Structured Streaming features of Apache Spark like:
+1. Kafka events producing
+1. Kafka events consuming
+1. Event Watermarking
+1. Unordered data
+1. Delayed data 
+1. JSON transformations
+1. Joins between streaming dataframes and batch dataframes
+1. Real Time data aggregation
+1. Processing Triggers
+1. Real Time processing in micro batch mode
+1. Loading batch data
+
 ## Prerequisites
 
-- Docker
-- Anaconda
+- Docker Engine
+- Docker Compose
+- Anaconda (Python 3)
 - PyCharm (optional)
 
 ## First Steps
 
-Configure Anaconda environment, using the provided template
+1. Configure Anaconda environment, using the provided template:
 
 ```conda env create -f pyspark-env.yml```
 
-Verify:
+2. Verify:
 
 ```conda env list```
 
-Open project with PyCharm using the recently created conda environment.  
-
-Download extra jar dependencies, needed for Spark Kafka Integration. You can use the provided script:
+3. Download extra jar dependencies, needed for Spark Kafka Integration. You can use the provided script:
 
 ```./download-dependencies.sh```
 
+Now you can open the project with PyCharm using the recently created conda environment.  
+
 ## Run the services
 
-Up the docker service kafka, provided into the folder docker-build-kafka, i.e.:
+Up the docker service kafka, defined into the folder docker-build-kafka, i.e.:
 
 ```cd docker-build-kafka```
 
