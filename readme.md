@@ -1,7 +1,7 @@
 # Kafka PySpark POC
 
-Written in Python 3, this project introduces basic Structured Streaming features of Apache Spark like:
-- Kafka events producing and consuming
+Written in Python 3, this project introduces basic streaming features like:
+- Kafka events producing and consuming in Streaming and Batch Mode
 - Event Watermarking, Unordered data, Delayed data 
 - JSON transformations
 - Joins between streaming dataframes and batch dataframes
@@ -9,6 +9,9 @@ Written in Python 3, this project introduces basic Structured Streaming features
 - Processing Triggers
 - Real Time micro batches and output modes (_append_, _update_, _complete_)
 - Loading batch data from files. Data caching
+- Jupyter Notebooks
+- Spark Pandas Interoperability
+- Chartify Basic Usage
 
 ## Prerequisites
 
@@ -50,6 +53,7 @@ The recommendation is to run the apps in __black__ simultaneously.
 |---                  |---                                |
 |RateToConsoleApp.py  |KafkaEventCountApp.py              |
 |__RateToKafkaApp.py__|__KafkaEventCountByLocationApp.py__|
+|                     |__KafkaEventSumByLocationApp.py__  |
 |                     |KafkaToConsoleApp.py               | 
 
 Please read the documentation to understand what does each program.
