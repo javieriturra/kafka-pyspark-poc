@@ -1,5 +1,5 @@
 from KafkaToConsoleApp import KafkaToConsoleApp
-from pyspark.sql.functions import window, expr
+from pyspark.sql.functions import window, expr, to_json, struct
 import time
 
 
@@ -13,7 +13,20 @@ class KafkaEventCountByLocationApp(KafkaToConsoleApp):
     def write_micro_batch(micro_batch_df, batch_id):
         ts = time.localtime()
         print("Showing ordered batch: %s, at %s" % (batch_id, time.strftime("%Y-%m-%d %H:%M:%S", ts)))
-        micro_batch_df.orderBy(micro_batch_df["window.start"], micro_batch_df["locationName"]).show(truncate=False)
+        micro_batch_df.persist()
+        kafka_df = micro_batch_df.orderBy(micro_batch_df["window.start"], micro_batch_df["locationName"]) \
+            .withColumn("key", expr("uuid()")) \
+            .withColumn("value", to_json(struct(micro_batch_df["window.start"], micro_batch_df["window.end"],
+                                                micro_batch_df["locationName"], micro_batch_df["count"],
+                                                micro_batch_df["lat"], micro_batch_df["lon"]))) \
+            .select("key", "value")
+        kafka_df.show(truncate=False)
+        kafka_df.write \
+            .format("kafka") \
+            .option("kafka.bootstrap.servers", "localhost:9092") \
+            .option("topic", "countByLocation") \
+            .save()
+        micro_batch_df.unpersist()
 
     def get_locations(self):
         locations_df = self.spark.read.option("header", True).option("inferschema", True).csv("./data/locations")
@@ -30,7 +43,8 @@ class KafkaEventCountByLocationApp(KafkaToConsoleApp):
             .withColumnRenamed("name", "locationName")
 
         # Group by window and location
-        return join_df.groupBy(window(join_df["eventTimestamp"], "60 seconds"), join_df["locationName"]).count()
+        return join_df.groupBy(window(join_df["eventTimestamp"], "60 seconds"), join_df["locationName"],
+                               join_df["lat"], join_df["lon"]).count()
 
 
 if __name__ == '__main__':
