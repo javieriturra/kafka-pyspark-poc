@@ -1,5 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import struct, to_json, expr
+import time
 
 
 class RateToConsoleApp:
@@ -16,7 +17,8 @@ class RateToConsoleApp:
 
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):
-        print("Showing batch: %s..." % batch_id)
+        ts = time.localtime()
+        print("Showing batch %s at %s" % (batch_id, time.strftime("%Y-%m-%d %H:%M:%S", ts)))
         micro_batch_df.show(truncate=False)
 
     def load(self, output_mode):
