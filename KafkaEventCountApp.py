@@ -16,10 +16,10 @@ class KafkaEventCountApp(KafkaToConsoleApp):
 
     def get_events_df(self):
         events_df = super().get_events_df()
-        count_df = events_df.groupBy(window(events_df["eventTimestamp"], "30 seconds")).count()
+        count_df = events_df.groupBy(window(events_df["eventTimestamp"], "60 seconds")).count()
         return count_df
 
 
 if __name__ == '__main__':
     x = KafkaEventCountApp(processing_time="10 seconds")
-    x.load("update")
+    x.load("complete")
