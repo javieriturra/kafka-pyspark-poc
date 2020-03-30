@@ -4,25 +4,27 @@ from pyspark.sql.functions import struct, to_json, expr
 
 class RateToConsoleApp:
     """
-    The RateToConsoleApp reads records from a Rate stream and show them in the console
+    The RateToConsoleApp reads records from a Apache Spark rate (fake) stream and shows them in the console.
+    Useful to emulate events.
     """
 
-    def __init__(self):
-        self.spark = SparkSession.builder.master("local[*]").getOrCreate()
+    def __init__(self, processing_time):
+        self.spark = SparkSession.builder.getOrCreate()
+        print("Spark version is: %s" % self.spark.version)
         print(self.spark.sparkContext.getConf().getAll())
-        print(self.spark.version)
+        self.processingTime = processing_time
 
     @staticmethod
     def write_micro_batch(micro_batch_df, batch_id):
         print("Showing batch: %s..." % batch_id)
         micro_batch_df.show(truncate=False)
 
-    def load(self):
+    def load(self, output_mode):
         events_df = self.get_events_df()
 
         events_df.writeStream \
-            .outputMode("append") \
-            .trigger(processingTime='5 seconds') \
+            .outputMode(output_mode) \
+            .trigger(processingTime=self.processingTime) \
             .foreachBatch(self.write_micro_batch) \
             .start()
 
@@ -38,5 +40,5 @@ class RateToConsoleApp:
 
 
 if __name__ == '__main__':
-    x = RateToConsoleApp()
-    x.load()
+    x = RateToConsoleApp('5 seconds')
+    x.load("append")

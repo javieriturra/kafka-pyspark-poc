@@ -4,11 +4,11 @@
 
 - Docker
 - Anaconda
-- PyCharm
+- PyCharm (optional)
 
 ## First Steps
 
-Configure Anaconda Environment:
+Configure Anaconda environment, using the provided template
 
 ```conda env create -f pyspark-env.yml```
 
@@ -18,8 +18,7 @@ Verify:
 
 Open project with PyCharm using the recently created conda environment.  
 
-Download extra jar dependencies, needed for Spark Kafka Integration. 
-You can use the provided script:
+Download extra jar dependencies, needed for Spark Kafka Integration. You can use the provided script:
 
 ```./download-dependencies.sh```
 
@@ -33,11 +32,12 @@ Up the docker service kafka, provided into the folder docker-build-kafka, i.e.:
 
 ## Run the apps
 
-To run the apps, use PyCharm's right click menu on the files:
-1. RateToKafkaApp.py: to produce events
-2. KafkaToConsoleApp.py: to consume events
+To run the apps, use PyCharm's right click menu on the files. Alternatively, you can run the apps in the console.
 
-Alternatively, you can run the apps in the console:
+|Producers           |Consumers                        |
+|---                 |---                              |
+|RateToConsoleApp.py |KafkaEventCountApp.py            |
+|RateToKafkaApp.py   |KafkaEventCountByLocationApp.py  |
+|                    |KafkaToConsoleApp.py             |
 
-1. ```~/anaconda3/envs/pyspark-env/bin/python RateToKafkaApp.py```
-2. ```~/anaconda3/envs/pyspark-env/bin/python KafkaToConsoleApp.py```
+Please read the documentation to understand what does each program.
