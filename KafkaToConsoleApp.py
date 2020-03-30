@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json, expr
-from pyspark.sql.types import StructType, StructField, TimestampType, LongType
+from pyspark.sql.types import StructType, StructField, TimestampType, LongType, IntegerType, StringType
 import time
 
 
@@ -19,7 +19,7 @@ class KafkaToConsoleApp:
     def write_micro_batch(micro_batch_df, batch_id):
         ts = time.localtime()
         print("Showing batch %s at %s" % (batch_id, time.strftime("%Y-%m-%d %H:%M:%S", ts)))
-        micro_batch_df.show(truncate=False)
+        micro_batch_df.orderBy("ordinal").show(truncate=False)
 
     def load(self, output_mode):
         self.get_events_df().writeStream \
@@ -30,7 +30,12 @@ class KafkaToConsoleApp:
         self.spark.streams.awaitAnyTermination()
 
     def get_events_df(self):
-        schema = StructType([StructField("value", LongType(), True), StructField("timestamp", TimestampType(), True)])
+        schema = StructType([
+            StructField("ordinal", LongType(), True),
+            StructField("locationId", IntegerType(), True),
+            StructField("timestamp", TimestampType(), True),
+            StructField("amount", LongType(), True),
+        ])
 
         # The events are watermarked on the eventTimestamp custom field (not the kafka timestamp)
         # Delay threshold indicates how much time the system will wait for events based on the watermark
@@ -41,8 +46,10 @@ class KafkaToConsoleApp:
             .load() \
             .withColumn("key", expr("string(key)")) \
             .withColumn("value", from_json(expr("string(value)"), schema)) \
-            .withColumn("eventValue", expr("value.value")) \
+            .withColumn("ordinal", expr("value.ordinal")) \
+            .withColumn("locationId", expr("value.locationId")) \
             .withColumn("eventTimestamp", expr("value.timestamp")) \
+            .withColumn("amount", expr("value.amount")) \
             .withWatermark(eventTime="eventTimestamp", delayThreshold="30 seconds") \
             .drop("value")
 

@@ -36,8 +36,13 @@ class RateToConsoleApp:
         rate_df = self.spark.readStream.format("rate").load()
         events_df = rate_df \
             .withColumn("key", expr("uuid()")) \
-            .withColumn("value", to_json(struct(rate_df["value"], rate_df["timestamp"]))) \
+            .withColumn("value",
+                        to_json(struct(rate_df["value"].alias("ordinal"),
+                                       expr("value % 3 +1").alias("locationId"),
+                                       rate_df["timestamp"],
+                                       expr("floor(rand() * 100000000 / 100)").alias("amount")))) \
             .select("key", "value")
+
         return events_df
 
 

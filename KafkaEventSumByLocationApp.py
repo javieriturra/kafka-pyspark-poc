@@ -3,7 +3,7 @@ from pyspark.sql.functions import window, expr, to_json, struct
 import time
 
 
-class KafkaEventCountByLocationApp(KafkaToConsoleApp):
+class KafkaEventSumByLocationApp(KafkaToConsoleApp):
     """
     The KafkaEventCountByLocationApp reads records from a given Kafka topic, groups by time window and location name
     and shows the result on the screen. The data of locations is a batch dataset, joined with the streaming data.
@@ -18,7 +18,7 @@ class KafkaEventCountByLocationApp(KafkaToConsoleApp):
             .withColumn("key", to_json(struct(micro_batch_df["window.start"], micro_batch_df["locationName"]))) \
             .withColumn("value", to_json(struct(micro_batch_df["window.start"],
                                                 micro_batch_df["window.end"],
-                                                micro_batch_df["count"],
+                                                micro_batch_df["sum(amount)"].alias("amountSum"),
                                                 micro_batch_df["lat"],
                                                 micro_batch_df["lon"],
                                                 micro_batch_df["locationName"]))) \
@@ -27,13 +27,12 @@ class KafkaEventCountByLocationApp(KafkaToConsoleApp):
         kafka_df.write \
             .format("kafka") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
-            .option("topic", "countByLocation") \
+            .option("topic", "sumByLocation") \
             .save()
         micro_batch_df.unpersist()
 
     def get_locations(self):
-        locations_df = self.spark.read.option("header", True).option("inferschema", True).csv("./data/locations")
-        return locations_df.cache()  # Very small dataframe, it can be cached
+        return self.spark.read.option("header", True).option("inferschema", True).csv("./data/locations").cache()
 
     def get_events_df(self):
         locations_df = self.get_locations()
@@ -45,11 +44,11 @@ class KafkaEventCountByLocationApp(KafkaToConsoleApp):
             .drop("id") \
             .withColumnRenamed("name", "locationName")
 
-        # Group by window and location and count
+        # Group by window and location and sum amounts
         return join_df.groupBy(window(join_df["eventTimestamp"], "60 seconds"), join_df["locationName"],
-                               join_df["lat"], join_df["lon"]).count()
+                               join_df["lat"], join_df["lon"]).sum("amount")
 
 
 if __name__ == '__main__':
-    x = KafkaEventCountByLocationApp(processing_time="10 seconds")
+    x = KafkaEventSumByLocationApp(processing_time="10 seconds")
     x.load("update")
