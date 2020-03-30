@@ -44,6 +44,7 @@ Up the docker service kafka, defined into the folder docker-build-kafka, i.e.:
 ## Running the Apps
 
 To run the apps, use PyCharm's right click menu on the files. Alternatively, you can run the apps in the console.
+The recommendation is to run the apps in __black__ simultaneously.
 
 |Producers            |Consumers                          |
 |---                  |---                                |
@@ -59,6 +60,6 @@ Please read the documentation to understand what does each program.
 - Writing to a Time Series Database
 - Spark Cluster Usage
 - Real time Visualization
-- More realistic data emulated data
+- More realistic emulated data
 - Connecting to a real data source
 
