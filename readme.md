@@ -5,7 +5,7 @@ Writen in Python 3, this project introduces basic Structured Streaming features 
 - Event Watermarking, Unordered data, Delayed data 
 - JSON transformations
 - Joins between streaming dataframes and batch dataframes
-- Real Time data aggregation
+- Data aggregation in time windows
 - Processing Triggers
 - Real Time micro batches and output modes (_append_, _update_, _complete_)
 - Loading batch data from files. Data caching
