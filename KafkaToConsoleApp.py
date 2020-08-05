@@ -38,7 +38,7 @@ class KafkaToConsoleApp:
         ])
 
         # The events are watermarked on the eventTimestamp custom field (not the kafka timestamp)
-        # Delay threshold indicates how much time the system will wait for events based on the watermark
+        # Delay threshold indicates how much time the system will wait for new events based on the watermark
         return self.spark.readStream \
             .format("kafka") \
             .option("kafka.bootstrap.servers", "localhost:9092") \
@@ -56,4 +56,4 @@ class KafkaToConsoleApp:
 
 if __name__ == '__main__':
     x = KafkaToConsoleApp(processing_time="10 seconds")
-    x.load("append")
+    x.load(output_mode="append")

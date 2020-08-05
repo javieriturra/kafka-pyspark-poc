@@ -54,4 +54,4 @@ class KafkaEventSumByLocationApp(KafkaToConsoleApp):
 
 if __name__ == '__main__':
     x = KafkaEventSumByLocationApp(processing_time="10 seconds")
-    x.load("update")
+    x.load(output_mode="update")
