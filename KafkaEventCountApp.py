@@ -5,7 +5,8 @@ import time
 
 class KafkaEventCountApp(KafkaToConsoleApp):
     """
-    The KafkaEventCountApp reads records from a Kafka topic, groups by time window and shows the result on the screen
+    The KafkaEventCountApp reads records from a Kafka topic, calculates the aggregate count grouped by time window and
+    shows the result on the screen
     """
 
     @staticmethod

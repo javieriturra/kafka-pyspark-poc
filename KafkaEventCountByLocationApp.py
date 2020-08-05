@@ -5,8 +5,10 @@ import time
 
 class KafkaEventCountByLocationApp(KafkaToConsoleApp):
     """
-    The KafkaEventCountByLocationApp reads records from a given Kafka topic, groups by time window and location name
-    and shows the result on the screen. The data of locations is a batch dataset, joined with the streaming data.
+    The KafkaEventCountByLocationApp:
+    1. Reads records from a given Kafka topic
+    2. Groups them by time window and location name, obtaining the aggregated count of events
+    3. Shows the result on the screen and then write it to kafka topic named countByLocation.
     """
 
     @staticmethod
